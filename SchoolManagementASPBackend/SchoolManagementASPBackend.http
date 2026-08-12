@@ -1,0 +1,6 @@
+@SchoolManagementASPBackend_HostAddress = http://localhost:5268
+
+GET {{SchoolManagementASPBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
