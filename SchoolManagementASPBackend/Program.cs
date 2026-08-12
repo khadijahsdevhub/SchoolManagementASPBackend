@@ -20,5 +20,5 @@ string connectionString =
     ?? throw new InvalidOperationException(
         "SchoolDatabase connection string is missing.");
 
-builder.Services.AddScoped<IStudentRepository>(
-    _ => new StudentRepository(connectionString));
+//builder.Services.AddScoped<IStudentRepository>(
+//    _ => new StudentRepository(connectionString));
