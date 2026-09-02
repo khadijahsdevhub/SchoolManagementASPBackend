@@ -1,16 +1,22 @@
-﻿using SchoolManagementASPBackend.Models;
+﻿using SchoolManagementASPBackend.DTOs.Students;
+using SchoolManagementASPBackend.Models;
 
 namespace SchoolManagementASPBackend.Services
 {
     public interface IStudentService
     {
-        Task<int> CreateStudent(Student student);
+        Task<int> CreateStudentAsync(Student student);
 
-        Task<Student> GetStudentById(int id);
+        Task<Student?> GetStudentByIdAsync(int id);
 
-        Task<List<Student>> GetAllStudents();
+        StudentResponse MapStudentResponse(Student student);
 
-        Task UpdateStudent(Student student);
-        Task DeleteStudent(int id);
+        Student MapCreateStudentRequest(CreateStudentRequest request);
+
+
+        //  Task<List<Student>> GetAllStudents();
+
+        // Task UpdateStudent(Student student);
+        //  Task DeleteStudent(int id);
     }
 }

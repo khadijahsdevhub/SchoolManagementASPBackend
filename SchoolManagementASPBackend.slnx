@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="SchoolManagementASPBackend/SchoolManagementASPBackend.csproj" />
+  <Project Path="StudentApi.Tests/SchoolManagementASPBackend.Tests.csproj" Id="7f4d0704-d298-4433-8f89-1f3ff4ecb8d9" />
 </Solution>

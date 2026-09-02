@@ -5,7 +5,7 @@ using SchoolManagementASPBackend.Repositories;
 
 namespace SchoolManagementASPBackend.Services
 {
-    public class StudentService
+    public class StudentService : IStudentService
     {
         private readonly IStudentRepository repository;
         private readonly ILogger<StudentService> logger;

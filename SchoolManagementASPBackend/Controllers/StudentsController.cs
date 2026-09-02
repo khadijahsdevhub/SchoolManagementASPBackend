@@ -9,9 +9,9 @@ namespace SchoolManagementASPBackend.Controllers
     [Route("api/[controller]")]
     public class StudentsController : ControllerBase
     {
-        private readonly StudentService service;
+        private readonly IStudentService service;
 
-        public StudentsController(StudentService service)
+        public StudentsController(IStudentService service)
         {
             this.service = service;
         }

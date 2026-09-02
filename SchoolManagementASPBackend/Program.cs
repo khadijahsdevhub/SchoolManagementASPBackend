@@ -1,8 +1,13 @@
+using Microsoft.EntityFrameworkCore;
 using SchoolManagementASPBackend.Exceptions;
 using SchoolManagementASPBackend.Repositories;
 using SchoolManagementASPBackend.Services;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -18,9 +23,9 @@ string connectionString =
     ?? throw new InvalidOperationException(
         "SchoolDatabase connection string is missing.");
 
-builder.Services.AddScoped<IStudentRepository>(
-    _ => new StudentRepository(connectionString));
-builder.Services.AddScoped<StudentService>();
+builder.Services.AddScoped<IStudentRepository>(sp =>
+    new StudentRepository(connectionString, sp.GetRequiredService<ILogger<StudentRepository>>()));
+builder.Services.AddScoped<IStudentService, StudentService>();
 
 var app = builder.Build();
 
@@ -42,3 +47,5 @@ app.MapControllers();
 
 
 app.Run();
+
+public partial class Program { }
