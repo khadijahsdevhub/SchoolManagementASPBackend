@@ -11,5 +11,7 @@ namespace SchoolManagementASPBackend.DTOs.Students
         public int Score { get; set; }
         [EmailAddress]
         public string? Email { get; set; }
+
+        public int DepartmentId { get; set; }
     }
 }

@@ -24,6 +24,11 @@ namespace SchoolManagementASPBackend.Services
                 throw new ArgumentException("Name is required.");
             if (student.Score < 0 || student.Score > 100)
                 throw new ArgumentException("Score must be between 0 and 100.");
+
+            // Ensure a valid department is assigned; default to General (Id = 1)
+            if (student.DepartmentId == 0)
+                student.DepartmentId = 1;
+
             logger.LogInformation("Creating student with name {Name}", student.Name);
             int id = await repository.CreateStudentAsync(student);
             logger.LogInformation("Student {StudentId} created successfully", id);
@@ -35,7 +40,51 @@ namespace SchoolManagementASPBackend.Services
             if (id <= 0)
                 throw new InvalidStudentIdException("Student ID must be greater than zero.");
 
-            return await repository.GetStudentByIdAsync(id);
+            return await repository.GetStudentByIdAsync(id, CancellationToken.None);
+        }
+
+        public async Task<Student?> UpdateStudentAsync(Student updateStudentRequest, CancellationToken cancellationToken)
+        {
+            if (updateStudentRequest.Id <= 0)
+                throw new InvalidStudentIdException(
+                    "Student ID must be greater than zero.");
+
+            if (string.IsNullOrWhiteSpace(updateStudentRequest.Name))
+                throw new ArgumentException("Name is required.");
+            if (updateStudentRequest.Score < 0 || updateStudentRequest.Score > 100)
+                throw new ArgumentException("Score must be between 0 and 100.");
+
+            // Ensure a valid department is assigned; default to General (Id = 1)
+            if (updateStudentRequest.DepartmentId == 0)
+                updateStudentRequest.DepartmentId = 1;
+
+            var updatedStudent = await repository.UpdateStudentAsync(updateStudentRequest, cancellationToken);
+
+            if (updatedStudent == null)
+            {
+
+                throw new StudentNotFoundException($"Student with ID {updateStudentRequest.Id} not found.");
+            }
+
+            return updatedStudent;
+        }
+
+        public async Task<StudentPaginationResponse> GetStudentsAsync(int page, int pageSize, CancellationToken cancellationToken)
+        {
+            if (page <= 0)
+                throw new ArgumentException("Page number must be greater than zero.");
+            if (pageSize <= 0 || pageSize > 100)
+                throw new ArgumentException("Page size must be greater than zero and less than or equal to 100.");
+            var (students, totalCount) = await repository.GetStudentsAsync(page, pageSize, cancellationToken);
+            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+            return new StudentPaginationResponse
+            {
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = totalCount,
+                TotalPages = totalPages,
+                Students = students.Select(MapStudentResponse).ToList()
+            };
         }
 
         public StudentResponse MapStudentResponse(Student student)
@@ -46,7 +95,9 @@ namespace SchoolManagementASPBackend.Services
                 Id = student.Id,
                 Name = student.Name,
                 Score = student.Score,
-                Email = student.Email
+                Email = student.Email,
+                DepartmentId = student.DepartmentId
+
             };
 
         }
@@ -57,7 +108,8 @@ namespace SchoolManagementASPBackend.Services
             {
                 Name = request.Name,
                 Score = request.Score,
-                Email = request.Email
+                Email = request.Email,
+                DepartmentId = request.DepartmentId
             };
         }
 

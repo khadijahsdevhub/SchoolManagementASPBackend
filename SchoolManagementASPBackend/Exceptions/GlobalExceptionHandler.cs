@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-
-
-
 namespace SchoolManagementASPBackend.Exceptions
 {
     public class GlobalExceptionHandler : IExceptionHandler
@@ -24,6 +21,7 @@ namespace SchoolManagementASPBackend.Exceptions
             {
 
                 InvalidStudentIdException => (StatusCodes.Status400BadRequest, "Bad Request", exception.Message),
+                ArgumentException => (StatusCodes.Status400BadRequest, "Bad Request", exception.Message),
                 StudentNotFoundException => (StatusCodes.Status404NotFound, "Student Not Found", exception.Message),
                 DuplicateStudentException => (StatusCodes.Status409Conflict, "Duplicate Student", exception.Message),
                 _ => (StatusCodes.Status500InternalServerError, "An unexpected error occurred.", "An unexpected error occurred while processing your request.")

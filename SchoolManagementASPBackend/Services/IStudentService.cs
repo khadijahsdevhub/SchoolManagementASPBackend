@@ -9,14 +9,15 @@ namespace SchoolManagementASPBackend.Services
 
         Task<Student?> GetStudentByIdAsync(int id);
 
+        Task<Student?> UpdateStudentAsync(Student updateStudentRequest, CancellationToken cancellationToken);
+
+        Task<StudentPaginationResponse> GetStudentsAsync(int page, int pageSize, CancellationToken cancellationToken);
+
         StudentResponse MapStudentResponse(Student student);
 
         Student MapCreateStudentRequest(CreateStudentRequest request);
 
 
-        //  Task<List<Student>> GetAllStudents();
-
-        // Task UpdateStudent(Student student);
-        //  Task DeleteStudent(int id);
+       
     }
 }

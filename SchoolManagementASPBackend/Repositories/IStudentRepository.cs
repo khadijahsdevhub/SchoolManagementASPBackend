@@ -6,6 +6,10 @@ namespace SchoolManagementASPBackend.Repositories
     {
         Task<int> CreateStudentAsync(Student student);
 
-        Task<Student?> GetStudentByIdAsync(int id);
+        Task<Student?> GetStudentByIdAsync(int id, CancellationToken cancellationToken);
+
+        Task<Student?> UpdateStudentAsync(Student student, CancellationToken cancellationToken);
+
+        Task<(List<Student> Students, int TotalCount)> GetStudentsAsync(int page, int pageSize, CancellationToken cancellationToken);
     }
 }
