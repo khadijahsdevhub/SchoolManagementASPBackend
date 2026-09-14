@@ -87,7 +87,7 @@ namespace SchoolManagementASPBackend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetStudents([FromQuery] StudentQueryParameters parameters)
         {
-            var studentPaginationResponse = await service.GetStudentsAsync(parameters.Page, parameters.PageSize, HttpContext.RequestAborted);
+            var studentPaginationResponse = await service.GetStudentsAsync(parameters, HttpContext.RequestAborted);
             return Ok(studentPaginationResponse);
         }
 

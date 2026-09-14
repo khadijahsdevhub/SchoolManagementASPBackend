@@ -1,4 +1,5 @@
-﻿using SchoolManagementASPBackend.Models;
+﻿using SchoolManagementASPBackend.DTOs.Students;
+using SchoolManagementASPBackend.Models;
 
 namespace SchoolManagementASPBackend.Repositories
 {
@@ -10,6 +11,6 @@ namespace SchoolManagementASPBackend.Repositories
 
         Task<Student?> UpdateStudentAsync(Student student, CancellationToken cancellationToken);
 
-        Task<(List<Student> Students, int TotalCount)> GetStudentsAsync(int page, int pageSize, CancellationToken cancellationToken);
+        Task<(List<Student> Students, int TotalCount)> GetStudentsAsync(StudentQueryParameters studentQueryParameters, CancellationToken cancellationToken);
     }
 }

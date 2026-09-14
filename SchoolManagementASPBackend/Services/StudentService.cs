@@ -69,18 +69,18 @@ namespace SchoolManagementASPBackend.Services
             return updatedStudent;
         }
 
-        public async Task<StudentPaginationResponse> GetStudentsAsync(int page, int pageSize, CancellationToken cancellationToken)
+        public async Task<StudentPaginationResponse> GetStudentsAsync(StudentQueryParameters studentQueryParameters, CancellationToken cancellationToken)
         {
-            if (page <= 0)
+            if (studentQueryParameters.Page <= 0)
                 throw new ArgumentException("Page number must be greater than zero.");
-            if (pageSize <= 0 || pageSize > 100)
+            if (studentQueryParameters.PageSize <= 0 || studentQueryParameters.PageSize > 100)
                 throw new ArgumentException("Page size must be greater than zero and less than or equal to 100.");
-            var (students, totalCount) = await repository.GetStudentsAsync(page, pageSize, cancellationToken);
-            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+            var (students, totalCount) = await repository.GetStudentsAsync(studentQueryParameters, cancellationToken);
+            var totalPages = (int)Math.Ceiling((double)totalCount / studentQueryParameters.PageSize);
             return new StudentPaginationResponse
             {
-                Page = page,
-                PageSize = pageSize,
+                Page = studentQueryParameters.Page,
+                PageSize = studentQueryParameters.PageSize,
                 TotalCount = totalCount,
                 TotalPages = totalPages,
                 Students = students.Select(MapStudentResponse).ToList()

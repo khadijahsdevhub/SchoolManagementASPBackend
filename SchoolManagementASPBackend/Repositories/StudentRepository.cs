@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SchoolManagementASPBackend.DTOs.Students;
 using SchoolManagementASPBackend.Models;
 using SchoolManagementASPBackend.StudentApi.Data;
 
@@ -84,14 +85,23 @@ namespace SchoolManagementASPBackend.Repositories
 
         }
 
-        public async Task<(List<Student> Students, int TotalCount)> GetStudentsAsync(int page, int pageSize, CancellationToken cancellationToken)
+        public async Task<(List<Student> Students, int TotalCount)> GetStudentsAsync(StudentQueryParameters studentQueryParameters, CancellationToken cancellationToken)
         {
-            int totalCount = await _context.Students.CountAsync(cancellationToken);
-            var students = await _context.Students
-                .AsNoTracking()
+            var query = _context.Students
+                .AsNoTracking();
+
+            if (studentQueryParameters.MinScore.HasValue)
+            {
+                query = query.Where(s =>
+                    s.Score >= studentQueryParameters.MinScore.Value);
+            }
+
+            int totalCount = await query.CountAsync(cancellationToken);
+
+            var students = await query
                 .OrderBy(s => s.Id)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
+                .Skip((studentQueryParameters.Page - 1) * studentQueryParameters.PageSize)
+                .Take(studentQueryParameters.PageSize)
                 .ToListAsync(cancellationToken);
 
             return (students, totalCount);

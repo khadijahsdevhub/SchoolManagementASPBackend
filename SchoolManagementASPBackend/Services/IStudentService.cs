@@ -11,7 +11,7 @@ namespace SchoolManagementASPBackend.Services
 
         Task<Student?> UpdateStudentAsync(Student updateStudentRequest, CancellationToken cancellationToken);
 
-        Task<StudentPaginationResponse> GetStudentsAsync(int page, int pageSize, CancellationToken cancellationToken);
+        Task<StudentPaginationResponse> GetStudentsAsync(StudentQueryParameters studentQueryParameters, CancellationToken cancellationToken);
 
         StudentResponse MapStudentResponse(Student student);
 
